@@ -7,15 +7,16 @@ if __name__ == "__main__":
 	print a[0]
 #	for campaign in a:
 #		print campaign;
-	db.command({
+	b = db.command({
 		"aggregate":"adverts",
 		"pipeline":[
 			{"$limit": 10000},
 			{"$group": {"_id" : "$user_id", "campaings": {"$push" : "$campaign"}}}
 		],
+		"cursor": {},
 		"allowDiskUse":True
 	});
 #	b = db.adverts.aggregate(
 #		[{"$group": {"_id" : "$user_id", "campaings": {"$push" : "$campaign"}}}]
 #		);
-#	print b[0];
+#	TODO: create a cursor out of the result set b
