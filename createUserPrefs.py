@@ -1,8 +1,5 @@
 from pymongo import MongoClient;
-
-if __name__ == "__main__":
-	c = MongoClient('localhost', 27017);
-	db = c['mydb'];
+def groupUsers(db):
 	b = db.command({
 		"aggregate":"adverts",
 		"pipeline":[
@@ -12,11 +9,14 @@ if __name__ == "__main__":
 		"cursor": {},
 		"allowDiskUse":True
 	});
-#	TODO: create a cursor out of the result set b
 	print type(b);
+
+if __name__ == "__main__":
+	c = MongoClient('localhost', 27017);
+	db = c['mydb'];
 	c = db.adverts.aggregate(
 		[
-                        {"$limit": 50000},
+                        {"$limit": 500000},
                         {"$group": {"_id" : "$user_id",
 				"campaigns": {"$push" : {"campaign":"$campaign", "activity":"$activity"}}}},
 			{"$out": "prefs"}
@@ -24,7 +24,8 @@ if __name__ == "__main__":
 		allowDiskUse=True,
 		cursor = {}
 	);
-	print type(c);
+	c = db.prefs.find({"campaigns": {"$not": {"$elemMatch": {"activity":"conversion"}}} });
+	print c;
 	a = 0;
 	for user in list(c):
 		print(user);
