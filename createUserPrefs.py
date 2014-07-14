@@ -16,7 +16,4 @@ if __name__ == "__main__":
 		"cursor": {},
 		"allowDiskUse":True
 	});
-#	b = db.adverts.aggregate(
-#		[{"$group": {"_id" : "$user_id", "campaings": {"$push" : "$campaign"}}}]
-#		);
 #	TODO: create a cursor out of the result set b
