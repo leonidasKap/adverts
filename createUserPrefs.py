@@ -3,10 +3,6 @@ from pymongo import MongoClient;
 if __name__ == "__main__":
 	c = MongoClient('localhost', 27017);
 	db = c['mydb'];
-	a = db.adverts.distinct('campaign');
-	print a[0]
-#	for campaign in a:
-#		print campaign;
 	b = db.command({
 		"aggregate":"adverts",
 		"pipeline":[
@@ -16,8 +12,8 @@ if __name__ == "__main__":
 		"cursor": {},
 		"allowDiskUse":True
 	});
+#	TODO: create a cursor out of the result set b
 	print type(b);
-#	print type(db.adverts.find({"timestamp":{"$gte": 1398949007, "$lt": 1398950007} }));
 	c = db.adverts.aggregate(
 		[
                         {"$limit": 5},
@@ -30,4 +26,3 @@ if __name__ == "__main__":
 	print type(c);
 	for user in list(c):
 		print(user);
-#	TODO: create a cursor out of the result set b
