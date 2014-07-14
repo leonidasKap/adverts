@@ -21,7 +21,8 @@ if __name__ == "__main__":
 	c = db.adverts.aggregate(
 		[
                         {"$limit": 5},
-                        {"$group": {"_id" : "$user_id", "campaigns": {"$push" : "$campaign"}}}
+                        {"$group": {"_id" : "$user_id",
+				"campaigns": {"$push" : {"campaign":"$campaign", "activity":"$activity"}}}}
                 ],
 		allowDiskUse=True,
 		cursor = {}
