@@ -20,11 +20,13 @@ if __name__ == "__main__":
 #	print type(db.adverts.find({"timestamp":{"$gte": 1398949007, "$lt": 1398950007} }));
 	c = db.adverts.aggregate(
 		[
-                        {"$group": {"_id" : "$user_id", "campaings": {"$push" : "$campaign"}}},
-                        {"$limit": 1000},
+                        {"$limit": 5},
+                        {"$group": {"_id" : "$user_id", "campaigns": {"$push" : "$campaign"}}}
                 ],
 		allowDiskUse=True,
 		cursor = {}
 	);
 	print type(c);
+	for user in list(c):
+		print(user);
 #	TODO: create a cursor out of the result set b
