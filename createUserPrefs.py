@@ -16,7 +16,7 @@ if __name__ == "__main__":
 	print type(b);
 	c = db.adverts.aggregate(
 		[
-                        {"$limit": 5},
+                        {"$limit": 50000},
                         {"$group": {"_id" : "$user_id",
 				"campaigns": {"$push" : {"campaign":"$campaign", "activity":"$activity"}}}}
                 ],
@@ -24,5 +24,9 @@ if __name__ == "__main__":
 		cursor = {}
 	);
 	print type(c);
+	a = 0;
 	for user in list(c):
 		print(user);
+		a=a+1;
+		if a == 10:
+			break;
