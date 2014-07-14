@@ -18,7 +18,8 @@ if __name__ == "__main__":
 		[
                         {"$limit": 50000},
                         {"$group": {"_id" : "$user_id",
-				"campaigns": {"$push" : {"campaign":"$campaign", "activity":"$activity"}}}}
+				"campaigns": {"$push" : {"campaign":"$campaign", "activity":"$activity"}}}},
+			{"$out": "prefs"}
                 ],
 		allowDiskUse=True,
 		cursor = {}
