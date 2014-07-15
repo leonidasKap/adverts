@@ -11,12 +11,26 @@ def groupUsers(db):
 	});
 	print type(b);
 
+def printFirstN(cursor, n):
+	a = 0;
+	for user in list(cursor):
+		print(user);
+		a=a+1;
+		if a == n:
+			break;
+def countActivities(converted):
+	activities = {'impression':0,'click':0,'retargeting':0,'conversion':0};
+	for item in converted:
+		for camp in item['campaigns']:
+			activities[camp['activity']]+=1;
+	return activities;
+
 if __name__ == "__main__":
 	c = MongoClient('localhost', 27017);
 	db = c['mydb'];
 	c = db.adverts.aggregate(
 		[
-                        {"$limit": 500000},
+                        #{"$limit": 500000},
                         {"$group": {"_id" : "$user_id",
 				"campaigns": {"$push" : {"campaign":"$campaign", "activity":"$activity"}}}},
 			{"$out": "prefs"}
@@ -24,11 +38,14 @@ if __name__ == "__main__":
 		allowDiskUse=True,
 		cursor = {}
 	);
-	c = db.prefs.find({"campaigns": {"$not": {"$elemMatch": {"activity":"conversion"}}} });
-	print c;
-	a = 0;
-	for user in list(c):
-		print(user);
-		a=a+1;
-		if a == 10:
-			break;
+	converted = db.prefs.find({"campaigns": {"$elemMatch": {"activity":"conversion"}} });
+	nonConverted = db.prefs.find({"campaigns": {"$not": {"$elemMatch": {"activity":"conversion"}}} });
+
+	print countActivities(converted);
+	print countActivities(nonConverted);
+	n = 10;
+	print n,' Converted : ',converted.count();
+	#printFirstN(converted, n);
+	print n,' Non Converted: ',nonConverted.count();
+	#printFirstN(nonConverted, n);
+
