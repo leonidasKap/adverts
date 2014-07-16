@@ -1,15 +1,4 @@
 from pymongo import MongoClient;
-def groupUsers(db):
-	b = db.command({
-		"aggregate":"adverts",
-		"pipeline":[
-			{"$limit": 10000},
-			{"$group": {"_id" : "$user_id", "campaings": {"$push" : "$campaign"}}}
-		],
-		"cursor": {},
-		"allowDiskUse":True
-	});
-	print type(b);
 
 def aggregateUsers(db, n):
 	db.adverts.aggregate(
@@ -48,7 +37,6 @@ def countActivitiesPerUser(db):
 	rawPrefs = db.prefs.find();
 	for user in rawPrefs:
 		uniqueCampaigns = {};
-		# you can put the number of campaigns in a seperate field
 		for camp in user['campaigns']:
 			if camp['campaign'] not in uniqueCampaigns:
 				uniqueCampaigns[camp['campaign']]={camp['activity']: 1};
@@ -67,7 +55,7 @@ def countActivitiesPerUser(db):
 if __name__ == "__main__":
 	c = MongoClient('localhost', 27017);
 	db = c['mydb'];
-	# aggregateUsers(db, 1000000);
+	aggregateUsers(db, 1000000); # this will limit the processing pipeline to the first 1000000 documents
 	converted = db.prefs.find({"campaigns": {"$elemMatch": {"activity":"conversion"}} });
 	nonConverted = db.prefs.find({"campaigns": {"$not": {"$elemMatch": {"activity":"conversion"}}} });
 
@@ -77,8 +65,7 @@ if __name__ == "__main__":
 	print countActivities(nonConverted);
 
 	# store the activities per campaign for a particular user in a new collection
-	# prefsFreq = countActivitiesPerUser(db);
-	prefsFreq = db.prefsFreq;
+	prefsFreq = countActivitiesPerUser(db);
 	# count how many users have been involved in x distinct campaigns
 	print 'The number of users with:';
 	for i in range(20):
