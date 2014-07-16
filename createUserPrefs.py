@@ -36,8 +36,14 @@ def countActivities(converted):
 	for item in converted:
 		for camp in item['campaigns']:
 			activities[camp['activity']]+=1;
+	converted.rewind(); # restore the cursor to its initial state
 	return activities;
+
 def countActivitiesPerUser(db):
+	# recreate collection with preference frequencies
+	if 'prefsFreq' in db.collection_names():
+		db.prefsFreq.drop();
+
 	db.create_collection('prefsFreq');
 	for user in nonConverted:
 		uniqueCampaigns = {};
@@ -50,8 +56,10 @@ def countActivitiesPerUser(db):
 
 		db.prefsFreq.insert({
 				"_id": user['_id'],
-				"campaigns" : uniqueCampaigns
+				"campaigns" : uniqueCampaigns,
+				"campaignCount" : len(uniqueCampaigns)
 			});
+	return db.prefsFreq;
 
 if __name__ == "__main__":
 	c = MongoClient('localhost', 27017);
@@ -60,18 +68,15 @@ if __name__ == "__main__":
 	converted = db.prefs.find({"campaigns": {"$elemMatch": {"activity":"conversion"}} });
 	nonConverted = db.prefs.find({"campaigns": {"$not": {"$elemMatch": {"activity":"conversion"}}} });
 
+	print 'Converted : ', converted.count();
 	print countActivities(converted);
+	print 'Non Converted: ', nonConverted.count();
 	print countActivities(nonConverted);
-	n = 3;
-	print ' Converted : ',converted.count();
-	converted.rewind();
-	nonConverted.rewind();
 
-	prefsFreq = db.prefsFreq.find();
-	for user in prefsFreq:
-		print len(user['campaigns']);
+	# store the activities per campaign for a particular user in a new collection
+	prefsFreq = countActivitiesPerUser(db);
+	# count how many users have more than two distinct campaigns
+	print prefsFreq.find({"campaignCount": {$gte : 2}}).count();
 
-	# printFirstN(converted, n);
-	print ' Non Converted: ',nonConverted.count();
-	#printFirstN(nonConverted, n);
+
 
