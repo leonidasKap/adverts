@@ -76,7 +76,7 @@ if __name__ == "__main__":
 	# store the activities per campaign for a particular user in a new collection
 	prefsFreq = countActivitiesPerUser(db);
 	# count how many users have more than two distinct campaigns
-	print prefsFreq.find({"campaignCount": {$gte : 2}}).count();
+	print prefsFreq.find({"campaignCount": {"$gte" : 2}}).count();
 
 
 
