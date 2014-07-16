@@ -77,11 +77,12 @@ if __name__ == "__main__":
 	print countActivities(nonConverted);
 
 	# store the activities per campaign for a particular user in a new collection
-	prefsFreq = countActivitiesPerUser(db);
-	# count how many users have more x distinct campaigns
+	# prefsFreq = countActivitiesPerUser(db);
+	prefsFreq = db.prefsFreq;
+	# count how many users have been involved in x distinct campaigns
 	print 'The number of users with:';
-	for i in range(10):
-		print i, ' campaigns: ', prefsFreq.find({"campaignCount": {"$gte" : i}}).count();
+	for i in range(20):
+		print i, ' campaigns: ', prefsFreq.find({"campaignCount": i}).count();
 
 
 
