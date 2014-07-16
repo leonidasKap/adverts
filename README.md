@@ -130,27 +130,32 @@ gives 4672976
 ## How to find the frequency of activity "click" for user i on campaign j
 
 First of all build an index on campaign so you can speed up queries
+
 $ db.adverts.ensureIndex({campaign: 1})
 
 In mongo cli you can collect all campaigns for each user. The following runs fine in mongodb cli
+
 $ db.adverts.aggregate([{"$group": {"_id" : "$user_id", "campaings": {"$push" : "$campaign"}}}],{allowDiskUse:true});
+
 Let me do the same in python, I have problems passing {allowDiskUse:true} so I 'll try
 db.runCommand.
 db.runCommand has problems, see:
-failed: exception: aggregation result exceeds maximum document size
-I fixed it finally
+	failed: exception: aggregation result exceeds maximum document size
 
-## How do I push the campaign and activity for each campaign ?
+
+## How do I collect the campaign and activity for each user ?
 
 ## How do I speed up the aggregation of users against their campaign ?
 First create a list of all indexes.
+
 $ db.adverts.getIndexes()
-Then create a joined index of user_id and campaign, that didn't speed up things massively
+
+Then create a joined index of user_id and campaign.
 
 
 =============
 
-Ideas for Affectv
+# Ideas
 
 Describe how you can put everything behind a server. The best demo would be to upload a file and see it analyzed. 
 The problem will be port forwarding. I don't think port 80 is open
