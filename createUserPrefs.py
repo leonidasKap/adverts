@@ -45,7 +45,8 @@ def countActivitiesPerUser(db):
 		db.prefsFreq.drop();
 
 	db.create_collection('prefsFreq');
-	for user in nonConverted:
+	rawPrefs = db.prefs.find();
+	for user in rawPrefs:
 		uniqueCampaigns = {};
 		# you can put the number of campaigns in a seperate field
 		for camp in user['campaigns']:
@@ -75,8 +76,10 @@ if __name__ == "__main__":
 
 	# store the activities per campaign for a particular user in a new collection
 	prefsFreq = countActivitiesPerUser(db);
-	# count how many users have more than two distinct campaigns
-	print prefsFreq.find({"campaignCount": {"$gte" : 2}}).count();
+	# count how many users have more x distinct campaigns
+	print 'The number of users with:';
+	for i in range(10):
+		print i, ' campaigns: ', prefsFreq.find({"campaignCount": {"$gte" : i}}).count();
 
 
 
