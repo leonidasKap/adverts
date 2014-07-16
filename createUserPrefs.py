@@ -53,7 +53,7 @@ def countActivitiesPerUser(db):
 		for camp in user['campaigns']:
 			if camp['campaign'] not in uniqueCampaigns:
 				uniqueCampaigns[camp['campaign']]={camp['activity']: 1};
-			else if camp['activity'] not in uniqueCampaigns[camp['campaign']]:
+			elif camp['activity'] not in uniqueCampaigns[camp['campaign']]:
 				uniqueCampaigns[camp['campaign']][camp['activity']]=1;
 			else:
 				uniqueCampaigns[camp['campaign']][camp['activity']]+=1;
