@@ -49,7 +49,6 @@ def countActivitiesPerUser(db):
 	for user in rawPrefs:
 		uniqueCampaigns = {};
 		# you can put the number of campaigns in a seperate field
-		print user;
 		for camp in user['campaigns']:
 			if camp['campaign'] not in uniqueCampaigns:
 				uniqueCampaigns[camp['campaign']]={camp['activity']: 1};
