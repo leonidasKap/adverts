@@ -49,6 +49,7 @@ def countActivitiesPerUser(db):
 	for user in rawPrefs:
 		uniqueCampaigns = {};
 		# you can put the number of campaigns in a seperate field
+		print user;
 		for camp in user['campaigns']:
 			if camp['campaign'] not in uniqueCampaigns:
 				uniqueCampaigns[camp['campaign']]={camp['activity']: 1};
@@ -65,7 +66,7 @@ def countActivitiesPerUser(db):
 if __name__ == "__main__":
 	c = MongoClient('localhost', 27017);
 	db = c['mydb'];
-	aggregateUsers(db, 1000000);
+	# aggregateUsers(db, 1000000);
 	converted = db.prefs.find({"campaigns": {"$elemMatch": {"activity":"conversion"}} });
 	nonConverted = db.prefs.find({"campaigns": {"$not": {"$elemMatch": {"activity":"conversion"}}} });
 
