@@ -16,7 +16,9 @@ install anaconda for windows from
 http://continuum.io/downloads
 
 
-# Start mongod Processes http://docs.mongodb.org/manual/tutorial/manage-mongodb-processes/#start-mongod-processes
+# Start mongod Processes 
+
+http://docs.mongodb.org/manual/tutorial/manage-mongodb-processes/#start-mongod-processes
 
 By default, MongoDB stores data in the /data/db directory. On Windows, MongoDB stores data in C:\data\db. On all platforms, MongoDB listens for connections from clients on port 27017.
 See.
