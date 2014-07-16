@@ -37,6 +37,21 @@ def countActivities(converted):
 		for camp in item['campaigns']:
 			activities[camp['activity']]+=1;
 	return activities;
+def countActivitiesPerUser(db):
+	db.create_collection('prefsFreq');
+	for user in nonConverted:
+		uniqueCampaigns = {};
+		# you can put the number of campaigns in a seperate field
+		for camp in user['campaigns']:
+			if camp['campaign'] not in uniqueCampaigns:
+				uniqueCampaigns[camp['campaign']]={camp['activity']: 1};
+			else:
+				uniqueCampaigns[camp['campaign']][camp['activity']]+=1;
+
+		db.prefsFreq.insert({
+				"_id": user['_id'],
+				"campaigns" : uniqueCampaigns
+			});
 
 if __name__ == "__main__":
 	c = MongoClient('localhost', 27017);
@@ -51,19 +66,10 @@ if __name__ == "__main__":
 	print ' Converted : ',converted.count();
 	converted.rewind();
 	nonConverted.rewind();
-	db.create_collection('prefsFreq');
-	for user in nonConverted:
-		uniqueCampaigns = {};
-		for camp in user['campaigns']:
-			if camp['campaign'] not in uniqueCampaigns:
-				uniqueCampaigns[camp['campaign']]={camp['activity']: 1};
-			else:
-				uniqueCampaigns[camp['campaign']][camp['activity']]+=1;
 
-		db.prefsFreq.insert({
-				"_id": user['_id'],
-				"campaigns" : uniqueCampaigns
-			});
+	prefsFreq = db.prefsFreq.find();
+	for user in prefsFreq:
+		print len(user['campaigns']);
 
 	# printFirstN(converted, n);
 	print ' Non Converted: ',nonConverted.count();
