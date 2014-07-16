@@ -65,7 +65,7 @@ def countActivitiesPerUser(db):
 if __name__ == "__main__":
 	c = MongoClient('localhost', 27017);
 	db = c['mydb'];
-	# aggregateUsers(db, 50000);
+	aggregateUsers(db, 1000000);
 	converted = db.prefs.find({"campaigns": {"$elemMatch": {"activity":"conversion"}} });
 	nonConverted = db.prefs.find({"campaigns": {"$not": {"$elemMatch": {"activity":"conversion"}}} });
 
