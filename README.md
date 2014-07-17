@@ -108,6 +108,15 @@ Otherwise you will see the following error message
 
                         not be found.
 
+# Running the code for the task
+
+ - Activate the python virtual environment set up for the task.
+ - Unzip the shipped code into a directory task.
+ - cd into task
+ - Run:
+
+    $ python createUserPrefs.py
+
 # MongoDB queries in mongo shell
 
 ## How to get the distinct number of users for a particular campaign
