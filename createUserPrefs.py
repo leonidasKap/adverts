@@ -1,61 +1,15 @@
 from pymongo import MongoClient;
-
-def aggregateUsers(db, n):
-	db.adverts.aggregate(
-		[
-            {"$limit": n},
-            {"$group": {"_id" : "$user_id",
-				"campaigns": {"$push" : {"campaign":"$campaign", "activity":"$activity"}}}},
-			{"$out": "prefs"}
-        ],
-		allowDiskUse=True,
-		cursor = {}
-	);
+import userAggregator;
 
 def printFirstN(cursor, n):
-	a = 0;
-	for user in cursor:
-		print user;
-		a=a+1;
-		if a == n:
-			break;
-
-def countActivities(converted):
-	activities = {'impression':0,'click':0,'retargeting':0,'conversion':0};
-	for item in converted:
-		for camp in item['campaigns']:
-			activities[camp['activity']]+=1;
-	converted.rewind(); # restore the cursor to its initial state
-	return activities;
-
-def countActivitiesPerUser(db):
-	# recreate collection with preference frequencies
-	if 'prefsFreq' in db.collection_names():
-		db.prefsFreq.drop();
-
-	db.create_collection('prefsFreq');
-	rawPrefs = db.prefs.find();
-	for user in rawPrefs:
-		uniqueCampaigns = {};
-		for camp in user['campaigns']:
-			if camp['campaign'] not in uniqueCampaigns:
-				uniqueCampaigns[camp['campaign']]={camp['activity']: 1};
-			elif camp['activity'] not in uniqueCampaigns[camp['campaign']]:
-				uniqueCampaigns[camp['campaign']][camp['activity']]=1;
-			else:
-				uniqueCampaigns[camp['campaign']][camp['activity']]+=1;
-
-		db.prefsFreq.insert({
-				"_id": user['_id'],
-				"campaigns" : uniqueCampaigns,
-				"campaignCount" : len(uniqueCampaigns)
-			});
-	return db.prefsFreq;
+	for i in range(n):
+		print cursor[i];
 
 if __name__ == "__main__":
 	c = MongoClient('localhost', 27017);
 	db = c['mydb'];
 	aggregateUsers(db, 1000000); # this will limit the processing pipeline to the first 1000000 documents
+
 	converted = db.prefs.find({"campaigns": {"$elemMatch": {"activity":"conversion"}} });
 	nonConverted = db.prefs.find({"campaigns": {"$not": {"$elemMatch": {"activity":"conversion"}}} });
 
