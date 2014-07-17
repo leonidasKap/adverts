@@ -19,8 +19,8 @@ See http://docs.mongodb.org/manual/tutorial/manage-mongodb-processes/#start-mong
     
     $ sudo lsof -i :27017
 
-	COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
-	mongod  6454 mongod    8u  IPv4  23931      0t0  TCP localhost:27017 (LISTEN)
+    COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+    mongod  6454 mongod    8u  IPv4  23931      0t0  TCP localhost:27017 (LISTEN)
 
 # Python on Windows
 Install anaconda for windows from
@@ -28,40 +28,40 @@ http://continuum.io/downloads
 
 To install the pymongo client on windows do:
 
-	$ pip install pymongo
+    $ pip install pymongo
 
 To work remotely with your mongo db instance set up port forwarding to your VM. Enter in source 27017 and in destination localhost:27017
 
 Then open a python cmd prompt:
 
-	$ from pymongo import MongoClient
-	$ c = MongoClient('localhost', 27017);
-	$ c.test_database
+    $ from pymongo import MongoClient
+    $ c = MongoClient('localhost', 27017);
+    $ c.test_database
     Database(MongoClient('localhost', 27017), u'test_database')
-	$ c['mydb']
+    $ c['mydb']
     Database(MongoClient('localhost', 27017), u'mydb')
-	$ print c['mydb'].adverts.find({"os": "Windows 7", "user_id":"5289f2a340596b70c832adac"})
+    $ print c['mydb'].adverts.find({"os": "Windows 7", "user_id":"5289f2a340596b70c832adac"})
     <pymongo.cursor.Cursor object at 0x00000000035826D8>
-	$ 
-	$ print list(c['mydb'].adverts.find({"os": "Windows 7", "user_id":"5289f2a340596b70c832adac"}));
+    $ 
+    $ print list(c['mydb'].adverts.find({"os": "Windows 7", "user_id":"5289f2a340596b70c832adac"}));
     [{u'city': u'crawley', u'domain': u'b50c3954bbca951077209ad91913e280', u'user_id': u'5289f2a340596b70c832adac', u'campaign': u'51dac16cc25908069f801c70', u'timestamp': 1398949007L, u'activity': u'impression', u'device': u'pc', u'_id': ObjectId('53bbfefc9d01fbcff21d51b1'), u'os': u'Windows 7', u'browser': u'IE'}]
-	$ 
+    $ 
 
 Print the contents returned from mongo
 
-	$ for item in c['mydb'].adverts.find({"os": "Windows 7", "user_id":"5289f2a340596b70c832adac"}):
-	$ ...      print item['city']; # item is a dict (i.e. dictionary) type. 
-	$ ...
-	crawley
+    $ for item in c['mydb'].adverts.find({"os": "Windows 7", "user_id":"5289f2a340596b70c832adac"}):
+    $ ...      print item['city']; # item is a dict (i.e. dictionary) type. 
+    $ ...
+    crawley
 
 Count items in a timestamp range. Useful for creating time series graphs
 
-	$ print c['mydb'].adverts.find({"timestamp":{"$gte": 1398949007, "$lt": 1398950007} }).count();
+    $ print c['mydb'].adverts.find({"timestamp":{"$gte": 1398949007, "$lt": 1398950007} }).count();
     121804
 
 Find items in a timestamp range
 
-	$ items = c['mydb'].adverts.find({"timestamp":{"$gte": 1398949007, "$lt": 1398950007} });
+    $ items = c['mydb'].adverts.find({"timestamp":{"$gte": 1398949007, "$lt": 1398950007} });
 
 
 # Python on CentOS
@@ -111,8 +111,10 @@ Otherwise you will see the following error message
  - Activate the python virtual environment set up for the task.
  - Unzip the shipped code into a directory task.
  - cd into task
- Finally, run:
+ - Finally
  
+Run:
+
     $ python createUserPrefs.py
 
 # MongoDB queries in mongo shell
