@@ -7,8 +7,8 @@ Once the VM is created follow the steps below:
 - sudo mongo
 - create a database called mydb
 
-- now cd into the directory with the data and execute:
-
+To import the data:
+- cd into the directory where the dataset was extracted and execute:
 
     $ ls | xargs -n1 mongoimport --db mydb --collection adverts --type csv --fields campaign,user_id,timestamp,city,browser,os,device,domain,activity  --stopOnError --file
 
