@@ -111,9 +111,8 @@ Otherwise you will see the following error message
  - Activate the python virtual environment set up for the task.
  - Unzip the shipped code into a directory task.
  - cd into task
- - Run:
-
-
+ Finally, run:
+ 
     $ python createUserPrefs.py
 
 # MongoDB queries in mongo shell
