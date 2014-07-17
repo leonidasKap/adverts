@@ -1,5 +1,5 @@
 from pymongo import MongoClient;
-import userAggregator;
+from userAggregator import aggregateUsers, countActivities, countActivitiesPerUser;
 
 def printFirstN(cursor, n):
 	for i in range(n):

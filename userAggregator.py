@@ -1,9 +1,9 @@
-# Accepts a mongo database with a collection called adverts.
-# It groups the campaigns and the corresponding browsing activities per the user.
+# Accepts a mongo database with a collection called adverts and a limit on how many
+# entries to process. It groups the campaigns and the corresponding browsing activities per the user.
 # For each user the created document follows the format below
 # {_id : user_id,
 # campaigns: [{campaign1 : activity1}, {campaign1 : activity2}, {campaign2 : activity1} ]}
-# Results are stored in a collection called prefs
+# Results are stored in a collection called prefs.
 def aggregateUsers(db, n):
 	db.adverts.aggregate(
 		[
