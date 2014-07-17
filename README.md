@@ -12,10 +12,6 @@ Once the VM is created follow the steps below:
 
     $ ls | xargs -n1 mongoimport --db mydb --collection adverts --type csv --fields campaign,user_id,timestamp,city,browser,os,device,domain,activity  --stopOnError --file
 
-install anaconda for windows from
-http://continuum.io/downloads
-
-
 # Start mongod Processes 
 
 http://docs.mongodb.org/manual/tutorial/manage-mongodb-processes/#start-mongod-processes
@@ -29,6 +25,9 @@ See.
 	mongod  6454 mongod    8u  IPv4  23931      0t0  TCP localhost:27017 (LISTEN)
 
 # Python on Windows
+Install anaconda for windows from
+http://continuum.io/downloads
+
 To install the pymongo client on windows do:
 
 	$ pip install pymongo
