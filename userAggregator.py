@@ -7,7 +7,7 @@
 def aggregateUsers(db, n):
 	db.adverts.aggregate(
 		[
-            {"$limit": n},
+            # {"$limit": n},
             {"$group": {"_id" : "$user_id",
 				"campaigns": {"$push" : {"campaign":"$campaign", "activity":"$activity"}}}},
 			{"$out": "prefs"}
@@ -38,7 +38,7 @@ def countActivitiesPerUser(db):
 
 	db.create_collection('prefsFreq');
 	rawPrefs = db.prefs.find();
-	limit = 100;
+	limit = 500;
 	xCount = 1;
 	documents = [];
 	for user in rawPrefs:
