@@ -38,6 +38,9 @@ def countActivitiesPerUser(db):
 
 	db.create_collection('prefsFreq');
 	rawPrefs = db.prefs.find();
+	limit = 100;
+	xCount = 1;
+	documents = [];
 	for user in rawPrefs:
 		uniqueCampaigns = {};
 		for camp in user['campaigns']:
@@ -47,10 +50,16 @@ def countActivitiesPerUser(db):
 				uniqueCampaigns[camp['campaign']][camp['activity']]=1;
 			else:
 				uniqueCampaigns[camp['campaign']][camp['activity']]+=1;
-
-		db.prefsFreq.insert({
+		if xCount % limit == 0:
+			db.prefsFreq.insert(documents);
+			xCount = 1;
+			documents = [];
+		else:
+			documents.append({
 				"_id": user['_id'],
 				"campaigns" : uniqueCampaigns,
 				"campaignCount" : len(uniqueCampaigns)
 			});
+			xCount+=1;
+	db.prefsFreq.insert(documents);
 	return db.prefsFreq;
